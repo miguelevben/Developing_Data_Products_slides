@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Predicting New-York Air Quality Parameters</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Predicting New-York Air Quality Parameters">
+  <meta name="author" content="M.Levy B.">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="libraries/widgets/bootstrap/css/bootstrap.css"></link>
+<link rel=stylesheet href="libraries/widgets/quiz/css/demo.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>Predicting New-York Air Quality Parameters</h1>
+    <h2></h2>
+    <p>M.Levy B.<br/></p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <hgroup>
+    <h2>Summary:</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>The aim of this presentation was to make a shiny application to obtain predicted values
+for air-quality parameters using linear regression. The application use the AirQuality <code>R</code> 
+dataset (obtained from New York city). </p>
+
+<pre><code>##   Ozone Solar.R Wind Temp Month Day
+## 1    41     190  7.4   67     5   1
+## 2    36     118  8.0   72     5   2
+## 3    12     149 12.6   74     5   3
+## 4    18     313 11.5   62     5   4
+## 5    NA      NA 14.3   56     5   5
+## 6    28      NA 14.9   66     5   6
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>The User Interface; selecting measurements:</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>This application allow select and compare two measurements from two SelectBox: </p>
+
+<pre><code>- A measurement to predict her value (outcome).
+- A measurement used as Predictor (Predictor).
+</code></pre>
+
+<p>The User interface is splited in two panels:</p>
+
+<pre><code>- Left-Hand panel : Allow select both measurement and fix a Predictor value from
+                    a SliderBar control.
+- Right-hand panel: Show the predicted value an a plot that show the relationship 
+                    between the measurements selected (outcome and predictor).
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Drawing the Plot; making a linear model.</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>With the measurements, the application automatically obtain a linear model 
+and fits a regression line for the selected variables drawing a plot.  </p>
+
+<pre><code>This example shows the code for plot obtained comparing Solar Radiation against Ozone.  
+</code></pre>
+
+<pre><code class="r">fit &lt;- lm(Ozone ~ Solar.R, data=airquality)
+plot(Ozone ~ Solar.R, data = airquality, xlab=&quot;Solar Radiation&quot;, ylab=&quot;Ozone&quot;)
+abline(fit, col=&quot;red&quot;)
+</code></pre>
+
+<p><img src="assets/fig/unnamed-chunk-2-1.png" alt="plot of chunk unnamed-chunk-2"> </p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Making predictions.</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Finally with the value fixed from SliderBar control, the application can to extrapolate a
+predicted value based on the coefficients obtained for the linear model that is fitted to the plot.</p>
+
+<pre><code class="r">sliderInput &lt;- 75
+fit &lt;- lm(Ozone ~ Solar.R, data=airquality)
+slp &lt;- fit$coeff[2]
+yint &lt;- fit$coeff[1]
+prediction &lt;- round(yint + slp * sliderInput,2)
+prediction
+</code></pre>
+
+<pre><code>## (Intercept) 
+##       28.14
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='Summary:'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='The User Interface; selecting measurements:'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='Drawing the Plot; making a linear model.'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Making predictions.'>
+         4
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  <script src="libraries/widgets/bootstrap/js/bootstrap.min.js"></script>
+<script src="libraries/widgets/bootstrap/js/bootbox.min.js"></script>
+<script src="libraries/widgets/quiz/js/jquery.quiz.js"></script>
+<script src="libraries/widgets/quiz/js/mustache.min.js"></script>
+<script src="libraries/widgets/quiz/js/quiz-app.js"></script>
+
+  <script>  
+  $(function (){ 
+    $("#example").popover(); 
+    $("[rel='tooltip']").tooltip(); 
+  });  
+  </script>  
+  
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>
